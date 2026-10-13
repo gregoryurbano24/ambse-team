@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMBSE Digital · Open the Aperture · New Hire Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#060709; --char:#0d0f13; --char2:#14171d; --steel:#cfd4dc; --steel2:#8b929e; --steel3:#4a505b;
+  --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+  --red:#e2273b; --red2:#9b1426; --gold:#d3ad62; --white:#f5f6f8;
+  --life:#e2273b; --prod:#d3ad62; --ops:#9fb3c8;
+  --display:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--white);font-family:var(--display);font-stretch:100%;overflow-x:hidden;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+::selection{background:var(--red);color:#fff}
+
+/* ---------- global texture ---------- */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+   repeating-linear-gradient(60deg,transparent 0 120px,rgba(255,255,255,.018) 120px 121px),
+   repeating-linear-gradient(-60deg,transparent 0 120px,rgba(255,255,255,.018) 120px 121px);}
+.glow-cursor{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(226,39,59,.10),transparent 60%);transform:translate(-50%,-50%);transition:opacity .4s;mix-blend-mode:screen}
+main{position:relative;z-index:2}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;
+  background:linear-gradient(to bottom,rgba(6,7,9,.85),transparent);backdrop-filter:blur(2px)}
+.brandmark{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;display:flex;gap:10px;align-items:center}
+.brandmark i{display:inline-block;width:14px;height:14px;background:conic-gradient(var(--red) 0 12.5%,var(--steel3) 0 25%,var(--red) 0 37.5%,var(--steel3) 0 50%,var(--red) 0 62.5%,var(--steel3) 0 75%,var(--red) 0 87.5%,var(--steel3) 0);clip-path:polygon(50% 0,85% 15%,100% 50%,85% 85%,50% 100%,15% 85%,0 50%,15% 15%);animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.navlinks{display:flex;gap:4px}
+.navlinks a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:8px 10px;color:var(--steel2);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);transition:.25s}
+.navlinks a:hover,.navlinks a.on{color:#fff;background:rgba(226,39,59,.18)}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));z-index:60;width:0}
+@media(max-width:900px){.navlinks{display:none}}
+
+/* ---------- shared ---------- */
+section{position:relative}
+.wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:34px;height:2px;background:var(--red);transform:skewX(-40deg)}
+.h-xl{font-size:clamp(44px,8vw,128px);font-weight:900;font-stretch:120%;line-height:.88;letter-spacing:-.02em;text-transform:uppercase}
+.h-lg{font-size:clamp(36px,5.4vw,84px);font-weight:900;font-stretch:115%;line-height:.92;letter-spacing:-.015em;text-transform:uppercase}
+.h-md{font-size:clamp(24px,2.6vw,38px);font-weight:800;font-stretch:110%;line-height:1;text-transform:uppercase}
+.lede{font-size:clamp(17px,1.4vw,21px);line-height:1.55;color:var(--steel);max-width:720px;font-weight:400}
+.outline{-webkit-text-stroke:1.5px var(--steel);color:transparent}
+.red{color:var(--red)} .gold{color:var(--gold)}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
+.slash-top{clip-path:polygon(0 6vw,100% 0,100% 100%,0 100%);margin-top:-6vw;padding-top:calc(6vw + 120px)}
+.pad{padding:140px 0}
+
+/* ---------- HERO / APERTURE ---------- */
+#open{height:340vh}
+.hero-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center}
+.hero-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse at 50% 50%,rgba(226,39,59,.16),transparent 55%),
+  radial-gradient(ellipse at 50% 120%,rgba(211,173,98,.10),transparent 60%)}
+.ap-wrap{position:relative;width:min(92vmin,920px);aspect-ratio:1}
+.ap-core{position:absolute;inset:14%;border-radius:50%;display:grid;place-items:center;text-align:center;overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,#2a0b10 0%,#120407 55%,#050506 100%)}
+.ap-core::before{content:"";position:absolute;inset:-20%;background:conic-gradient(from 0deg,transparent,rgba(226,39,59,.35),transparent 30%,rgba(211,173,98,.25),transparent 60%);animation:spin 14s linear infinite;filter:blur(30px)}
+.ap-core .beam{position:absolute;left:50%;top:-10%;width:30%;height:120%;transform:translateX(-50%);background:linear-gradient(to bottom,rgba(255,255,255,.22),transparent 70%);filter:blur(18px)}
+.core-text{position:relative;z-index:2;padding:0 14%}
+.core-text small{display:block;font-family:var(--mono);font-size:clamp(9px,1.2vmin,12px);letter-spacing:.3em;color:var(--gold);margin-bottom:1.4vmin;text-transform:uppercase}
+.core-text b{display:block;font-size:clamp(26px,6.4vmin,74px);font-weight:900;font-stretch:125%;line-height:.86;text-transform:uppercase}
+.core-text span{display:block;margin-top:1.6vmin;font-size:clamp(11px,1.7vmin,17px);color:var(--steel);line-height:1.4}
+#aperture{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:3}
+.ap-core{z-index:1}
+.hero-hud{position:absolute;inset:0;pointer-events:none}
+.hud-tl,.hud-br,.hud-bl,.hud-tr{position:absolute;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel2);line-height:1.8}
+.hud-tl{top:92px;left:28px}.hud-tr{top:92px;right:28px;text-align:right}.hud-bl{bottom:28px;left:28px}.hud-br{bottom:28px;right:28px;text-align:right}
+.hud-tl b,.hud-tr b{color:#fff;font-weight:600}
+.scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--steel2);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-cue i{width:1px;height:46px;background:linear-gradient(var(--red),transparent);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hero-caption{position:absolute;left:0;right:0;bottom:9vh;text-align:center;opacity:0;transform:translateY(30px);transition:none;padding:0 20px}
+.hero-caption .h-md{font-size:clamp(20px,2.8vw,40px)}
+.hero-caption p{margin-top:12px;color:var(--steel);font-size:clamp(14px,1.2vw,18px)}
+.hud-pct{font-size:44px;font-weight:900;font-stretch:125%;color:#fff;letter-spacing:0;font-family:var(--display)}
+
+/* ---------- HALO TICKER ---------- */
+.halo{position:relative;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:#0a0b0e;overflow:hidden;padding:22px 0;transform:skewY(-2deg);margin:40px 0}
+.halo-track{display:flex;gap:60px;white-space:nowrap;animation:marquee 40s linear infinite;width:max-content}
+.halo span{font-size:clamp(28px,4vw,56px);font-weight:900;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em}
+.halo span:nth-child(odd){-webkit-text-stroke:1px var(--steel2);color:transparent}
+.halo span em{font-style:normal;color:var(--red);margin:0 30px}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- MISSION ---------- */
+.mission-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:end;margin-top:40px}
+@media(max-width:900px){.mission-grid{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:70px}
+@media(min-width:1000px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--char);padding:34px 28px 30px;position:relative;overflow:hidden;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.stat::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--red);transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+.stat.in::after{width:100%}
+.stat .num{font-size:clamp(46px,5vw,78px);font-weight:900;font-stretch:125%;line-height:1}
+.stat .num sup{font-size:.45em;color:var(--red);vertical-align:top;margin-left:2px}
+.stat .lbl{margin-top:12px;color:var(--steel);font-size:15px;line-height:1.4}
+.stat .src{margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--steel3);text-transform:uppercase}
+.brands{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:70px}
+@media(max-width:900px){.brands{grid-template-columns:repeat(2,1fr)}}
+.brand{border:1px solid var(--line2);padding:26px 22px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;transition:.35s}
+.brand:hover{border-color:var(--red);transform:translateY(-4px)}
+.brand::before{content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;background:linear-gradient(135deg,var(--accent),transparent 70%);opacity:.35;transform:rotate(45deg)}
+.brand b{font-size:22px;font-weight:900;font-stretch:115%;text-transform:uppercase;line-height:1}
+.brand small{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--steel2);text-transform:uppercase}
+
+/* ---------- STRUCTURE ---------- */
+#structure{background:linear-gradient(180deg,var(--ink),#0b0c10)}
+.org{margin-top:70px;display:flex;flex-direction:column;align-items:center;gap:0}
+.org-node{background:var(--char2);border:1px solid var(--line2);padding:18px 26px;text-align:center;position:relative;min-width:250px;clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%,0 50%)}
+.org-node small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--steel2);text-transform:uppercase;margin-top:5px}
+.org-node b{font-size:18px;font-weight:800;font-stretch:110%}
+.org-node.top{opacity:.75;transform:scale(.9)}
+.org-node.lead{background:linear-gradient(135deg,#2a0c12,#140609);border-color:var(--red);padding:22px 40px}
+.org-node.lead b{font-size:24px}
+.vline{width:2px;height:46px;background:linear-gradient(var(--line2),var(--red))}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:100%;margin-top:0;position:relative;padding-top:46px}
+.pillars::before{content:"";position:absolute;top:0;left:16.66%;right:16.66%;height:2px;background:var(--red)}
+.pillar{position:relative;border-top:3px solid var(--pc);background:var(--char);padding:30px 26px 26px;clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%)}
+.pillar::before{content:"";position:absolute;top:-49px;left:50%;width:2px;height:46px;background:var(--red)}
+.pillar .ptag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--pc);text-transform:uppercase}
+.pillar h3{font-size:24px;font-weight:900;font-stretch:115%;text-transform:uppercase;margin:10px 0 6px;line-height:1}
+.pillar p{color:var(--steel);font-size:14px;line-height:1.5;margin-bottom:18px}
+.p-lead{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.p-mem{display:flex;align-items:center;gap:12px;padding:10px 0 10px 22px;border-bottom:1px dashed var(--line);position:relative}
+.p-mem::before{content:"";position:absolute;left:6px;top:0;bottom:50%;width:10px;border-left:1px solid var(--steel3);border-bottom:1px solid var(--steel3)}
+.chip{width:38px;height:38px;flex:none;display:grid;place-items:center;font-weight:900;font-size:13px;font-stretch:120%;background:var(--pc);color:#0a0a0a;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.p-mem .chip{width:32px;height:32px;font-size:11px;background:transparent;color:var(--pc);border:none;box-shadow:inset 0 0 0 2px var(--pc)}
+.p-name b{display:block;font-size:15px;font-weight:700}
+.p-name small{font-size:12px;color:var(--steel2)}
+.newtag{font-family:var(--mono);font-size:9px;letter-spacing:.14em;background:var(--red);color:#fff;padding:2px 6px;margin-left:6px;vertical-align:middle}
+.seasonal{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.seasonal div{border:1px dashed var(--line2);padding:12px 18px;font-size:14px;color:var(--steel)}
+.seasonal b{color:#fff}
+@media(max-width:900px){.pillars{grid-template-columns:1fr}.pillars::before,.pillar::before{display:none}}
+
+/* ---------- CREW ---------- */
+.crew-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px;margin-top:70px}
+.card{position:relative;background:linear-gradient(160deg,#16191f,#0c0d11);border:1px solid var(--line);padding:30px 26px 26px;min-height:600px;
+  clip-path:polygon(0 0,calc(100% - 40px) 0,100% 40px,100% 100%,40px 100%,0 calc(100% - 40px));transform-style:preserve-3d;transition:transform .25s ease,border-color .3s;will-change:transform}
+.card:hover{border-color:var(--pc)}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.08),transparent 45%);pointer-events:none}
+.card .idx{position:absolute;top:22px;right:52px;font-family:var(--mono);font-size:11px;color:var(--steel3);letter-spacing:.1em}
+.card .mono{width:64px;height:64px;display:grid;place-items:center;font-size:22px;font-weight:900;font-stretch:125%;color:#0a0a0a;background:var(--pc);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.card .team{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--pc);text-transform:uppercase;margin-top:22px}
+.card h3{font-size:28px;font-weight:900;font-stretch:115%;text-transform:uppercase;line-height:.95;margin-top:8px}
+.card .title{color:var(--steel);font-size:14px;margin-top:8px;line-height:1.4}
+.card ul{list-style:none;margin-top:4px}
+.role-block{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+.role-block>b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--pc);text-transform:uppercase;margin-bottom:4px}
+.card li{font-size:14px;line-height:1.45;color:#dfe2e7;padding:5px 0 5px 18px;position:relative}
+.card li::before{content:"";position:absolute;left:0;top:12px;width:8px;height:2px;background:var(--pc);transform:skewX(-40deg)}
+.card .impact{margin-top:16px;padding:14px 14px 14px 16px;background:rgba(255,255,255,.04);border-left:3px solid var(--pc);font-size:13.5px;line-height:1.5;color:var(--steel)}
+.card .impact b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#fff;margin-bottom:6px;text-transform:uppercase}
+.card.newbie{background:linear-gradient(160deg,#2a0c12,#0c0d11)}
+.card.newbie .idx{color:var(--red)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:40px}
+.filters button{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px;background:transparent;color:var(--steel);border:1px solid var(--line2);cursor:pointer;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);transition:.2s}
+.filters button.on,.filters button:hover{background:var(--white);color:#000}
+.card.dim{opacity:.18;filter:grayscale(1);transform:scale(.97)}
+
+/* ---------- LIFECYCLE ---------- */
+#lifecycle{background:#08090c}
+.life-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:60px}
+.life-sticky{position:sticky;top:10vh;height:80vh;display:grid;place-items:center}
+.ring-wrap{position:relative;width:min(40vw,600px);aspect-ratio:1}
+#ring{width:100%;height:100%;overflow:visible}
+.ring-center{position:absolute;inset:26%;display:grid;place-items:center;text-align:center}
+.ring-center .rc-n{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--gold)}
+.ring-center .rc-t{font-size:clamp(22px,2.6vw,40px);font-weight:900;font-stretch:120%;text-transform:uppercase;line-height:.9;margin-top:10px}
+.ring-center .rc-who{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.ring-center .rc-who span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:4px 7px;border:1px solid var(--line2);color:var(--steel)}
+.ring-center .rc-who span.l{border-color:var(--life);color:var(--life)}
+.ring-center .rc-who span.p{border-color:var(--prod);color:var(--prod)}
+.ring-center .rc-who span.o{border-color:var(--ops);color:var(--ops)}
+.ring-center .rc-who span.d{border-color:#fff;color:#fff}
+.stage{min-height:78vh;display:flex;flex-direction:column;justify-content:center;padding:40px 0;opacity:.22;transition:opacity .5s}
+.stage.active{opacity:1}
+.stage .snum{font-size:120px;font-weight:900;font-stretch:125%;line-height:.8;-webkit-text-stroke:1.5px var(--red);color:transparent}
+.stage h3{font-size:clamp(34px,4vw,60px);font-weight:900;font-stretch:118%;text-transform:uppercase;line-height:.9;margin-top:14px}
+.stage .q{font-size:20px;color:var(--gold);margin-top:12px;font-weight:600}
+.stage p{color:var(--steel);font-size:17px;line-height:1.6;margin-top:16px;max-width:560px}
+.chans{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.chans span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;background:rgba(255,255,255,.06);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.proof{margin-top:20px;border-left:3px solid var(--red);padding:12px 16px;background:rgba(226,39,59,.07);font-size:14.5px;line-height:1.55;color:#e6e8ec;max-width:560px}
+.proof b{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--red);display:block;margin-bottom:4px;text-transform:uppercase}
+@media(max-width:900px){.life-grid{grid-template-columns:1fr}.life-sticky{position:relative;height:auto;top:0}.ring-wrap{width:84vw}.stage{min-height:auto;opacity:1}}
+
+/* ---------- ENGINES ---------- */
+.engines{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:60px}
+@media(max-width:900px){.engines{grid-template-columns:1fr}}
+.venn{position:relative;aspect-ratio:1.25;width:100%}
+.venn svg{width:100%;height:100%;overflow:visible}
+.eng-list{display:flex;flex-direction:column;gap:16px}
+.eng{border:1px solid var(--line2);padding:22px 24px;position:relative;background:var(--char);clip-path:polygon(0 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%)}
+.eng::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pc)}
+.eng .t{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--pc);text-transform:uppercase}
+.eng h4{font-size:22px;font-weight:900;font-stretch:115%;text-transform:uppercase;margin:6px 0}
+.eng p{color:var(--steel);font-size:14.5px;line-height:1.5}
+.eng .who{font-size:13px;color:#fff;margin-top:8px;font-weight:600}
+.pipe{margin-top:110px;position:relative}
+.pipe-line{position:absolute;left:0;right:0;top:44px;height:2px;background:var(--line2)}
+.pipe-fill{position:absolute;left:0;top:44px;height:2px;width:0;background:linear-gradient(90deg,var(--red),var(--gold));box-shadow:0 0 14px var(--red);transition:width 2.4s cubic-bezier(.2,.7,.2,1)}
+.pipe.in .pipe-fill{width:100%}
+.pipe-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;position:relative}
+.pstep{padding-top:0}
+.pstep .dot{width:88px;height:88px;display:grid;place-items:center;background:#0d0f13;border:2px solid var(--line2);font-size:28px;font-weight:900;font-stretch:125%;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);transition:.5s;transition-delay:var(--dl)}
+.pipe.in .pstep .dot{background:var(--red);border-color:var(--red)}
+.pstep h5{font-size:17px;font-weight:900;font-stretch:112%;text-transform:uppercase;margin-top:18px}
+.pstep p{font-size:13.5px;color:var(--steel);line-height:1.5;margin-top:6px}
+.pstep .tool{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--gold);margin-top:8px;text-transform:uppercase}
+@media(max-width:1000px){.pipe-steps{grid-template-columns:repeat(2,1fr);row-gap:40px}.pipe-line,.pipe-fill{display:none}}
+.owns{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:100px}
+.owns > div{background:var(--char);padding:34px 30px}
+.owns h4{font-size:26px;font-weight:900;font-stretch:115%;text-transform:uppercase}
+.owns ul{list-style:none;margin-top:16px}
+.owns li{padding:9px 0;border-bottom:1px solid var(--line);color:#e2e5ea;font-size:15px}
+.owns li::before{content:"\25B8";color:var(--red);margin-right:10px}
+.owns > div:last-child li::before{color:var(--gold)}
+@media(max-width:800px){.owns{grid-template-columns:1fr}}
+
+/* ---------- INNOVATION ---------- */
+#innovate{background:linear-gradient(180deg,#0b0c10,var(--ink))}
+.inno-rail{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:60px 28px 40px;margin-top:20px;scrollbar-width:thin;scrollbar-color:var(--red) transparent}
+.inno{flex:0 0 min(420px,82vw);scroll-snap-align:start;min-height:430px;padding:34px 30px;position:relative;overflow:hidden;background:#0f1116;border:1px solid var(--line);
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transition:.4s}
+.inno:nth-child(odd){clip-path:polygon(0 0,100% 30px,100% 100%,0 100%)}
+.inno:nth-child(even){clip-path:polygon(0 30px,100% 0,100% 100%,0 100%)}
+.inno:hover{background:#15181f}
+.inno .ic{width:74px;height:74px;margin-top:20px}
+.inno .tag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-top:26px}
+.inno h4{font-size:30px;font-weight:900;font-stretch:118%;text-transform:uppercase;line-height:.95;margin-top:10px}
+.inno p{color:var(--steel);font-size:15px;line-height:1.55;margin-top:14px}
+.inno .lead{font-size:12px;font-family:var(--mono);letter-spacing:.1em;color:#fff;margin-top:18px;text-transform:uppercase}
+.inno .bignum{position:absolute;right:-10px;bottom:-30px;font-size:180px;font-weight:900;font-stretch:125%;color:rgba(255,255,255,.035);line-height:1}
+.rail-hint{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--steel2);text-transform:uppercase;margin-top:24px}
+
+/* ---------- VALUES ---------- */
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:70px}
+@media(max-width:1000px){.values{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.values{grid-template-columns:1fr}}
+.val{position:relative;perspective:1200px;min-height:380px;cursor:pointer}
+.val-in{position:absolute;inset:0;transition:transform .8s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.val.flip .val-in{transform:rotateY(180deg)}
+.val-f,.val-b{position:absolute;inset:0;backface-visibility:hidden;padding:32px 28px;border:1px solid var(--line2);
+  clip-path:polygon(0 0,calc(100% - 34px) 0,100% 34px,100% 100%,0 100%)}
+.val-f{background:linear-gradient(150deg,#15171d,#0b0c10);display:flex;flex-direction:column;justify-content:space-between}
+.val-b{background:linear-gradient(150deg,#2a0c12,#100508);transform:rotateY(180deg);overflow:auto}
+.val-f .vn{font-size:84px;font-weight:900;font-stretch:125%;line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--steel3)}
+.val-f h4{font-size:34px;font-weight:900;font-stretch:118%;text-transform:uppercase;line-height:.92}
+.val-f p{color:var(--steel);font-size:14px;line-height:1.5;margin-top:12px}
+.val-f .flip-hint{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-top:16px}
+.val-b b{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:8px}
+.val-b p{font-size:14.5px;line-height:1.55;color:#eceef2;margin-bottom:18px}
+.val-b .sharp{border-top:1px solid rgba(255,255,255,.15);padding-top:14px;color:var(--steel)}
+
+/* ---------- TOOLKIT ---------- */
+.tk{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;margin-top:60px}
+@media(max-width:900px){.tk{grid-template-columns:1fr}}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+.tool{background:var(--char);padding:22px 22px;transition:.3s;position:relative}
+.tool:hover{background:#1a1d24}
+.tool b{font-size:18px;font-weight:800;font-stretch:110%;text-transform:uppercase}
+.tool p{font-size:13.5px;color:var(--steel);margin-top:6px;line-height:1.45}
+.tool::after{content:"";position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 18px 18px 0;border-color:transparent var(--red) transparent transparent;opacity:0;transition:.3s}
+.tool:hover::after{opacity:1}
+.rhythm{border:1px solid var(--line2);padding:30px 28px;clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%)}
+.rhythm h4{font-size:24px;font-weight:900;font-stretch:115%;text-transform:uppercase}
+.rh{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.rh .day{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--red);width:54px;flex:none;padding-top:3px}
+.rh b{display:block;font-size:15px}
+.rh small{color:var(--steel2);font-size:13px}
+.rules{margin-top:26px}
+.rules li{list-style:none;font-size:14.5px;color:var(--steel);padding:8px 0 8px 22px;position:relative;line-height:1.5}
+.rules li::before{content:"";position:absolute;left:0;top:15px;width:10px;height:10px;background:var(--gold);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+
+/* ---------- FINALE ---------- */
+#finale{min-height:120vh;display:grid;place-items:center;text-align:center;overflow:hidden;position:relative}
+#finale .ap2{position:absolute;width:min(130vmin,1300px);aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%);opacity:.5}
+#finale .fin{position:relative;z-index:2;padding:0 20px}
+#finale .fin p{color:var(--steel);font-size:clamp(16px,1.4vw,20px);margin-top:24px;line-height:1.6}
+.sig{margin-top:40px;font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--steel2);text-transform:uppercase}
+footer{padding:40px 28px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--steel3);text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;position:relative;z-index:2}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="glow-cursor" id="glow"></div>
+
+<nav class="nav">
+  <div class="brandmark"><i></i>AMBSE // Digital Experience</div>
+  <div class="navlinks" id="navlinks">
+    <a href="#open">Aperture</a>
+    <a href="#mission">The Job</a>
+    <a href="#structure">Structure</a>
+    <a href="#crew">Crew</a>
+    <a href="#lifecycle">Lifecycle</a>
+    <a href="#engines">Two Engines</a>
+    <a href="#innovate">Innovation</a>
+    <a href="#values">Values</a>
+    <a href="#toolkit">Toolkit</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================= HERO : APERTURE ================= -->
+<section id="open">
+  <div class="hero-stick">
+    <div class="hero-bg"></div>
+    <div class="ap-wrap" id="apWrap">
+      <div class="ap-core">
+        <div class="beam"></div>
+        <div class="core-text">
+          <small id="welcomeKicker">New hire field guide</small>
+          <b id="welcomeName">Welcome<br>to the team</b>
+          <span>AMBSE Digital Experience</span>
+        </div>
+      </div>
+      <svg id="aperture" viewBox="-560 -560 1120 1120" aria-hidden="true"></svg>
+    </div>
+    <div class="hero-hud">
+      <div class="hud-tl"><b>Open the Aperture</b><br>AMBSE Digital Experience<br>Field guide · Oct 2026</div>
+      <div class="hud-tr"><b>8 petals</b><br>8 full-time teammates<br>1 connected fan experience</div>
+      <div class="hud-bl">Roof status<br><span class="hud-pct" id="hudPct">0%</span></div>
+      <div class="hud-br">Mercedes-Benz Stadium<br>Atlanta Falcons · Atlanta United<br>Atlanta City FC</div>
+    </div>
+    <div class="scroll-cue" id="scrollCue">Scroll to open the roof<i></i></div>
+    <div class="hero-caption" id="heroCaption">
+      <div class="h-md">Eight petals open the roof.<br><span class="red">Eight teammates open the experience.</span></div>
+      <p>Here's who we are, how we work and why it matters to every fan who walks through the gates.</p>
+    </div>
+  </div>
+</section>
+
+<div class="halo" aria-hidden="true"><div class="halo-track" id="haloTrack"></div></div>
+
+<!-- ================= MISSION ================= -->
+<section id="mission" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">01 · The job</div>
+    <div class="mission-grid">
+      <h2 class="h-lg reveal d1">We build every<br><span class="outline">digital moment</span><br>between a fan<br>and the <span class="red">gates.</span></h2>
+      <p class="lede reveal d2">AMBSE Digital Experience is a shared service team. We run the websites, apps, email, SMS and digital tools that fans use across four brands, and we own marketing for Mercedes-Benz Stadium. Our job is to turn interest into tickets, tickets into great days and great days into lifelong fans, then prove it with data.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal"><div class="num"><span data-count="4">0</span></div><div class="lbl">Brands we serve every day, from the stadium to a brand new NWSL club</div><div class="src">MBS · Falcons · United · Atlanta City FC</div></div>
+      <div class="stat reveal d1"><div class="num"><span data-count="4">0</span></div><div class="lbl">Mobile apps in our platform RFP, three full rebuilds and one net-new build</div><div class="src">App platform RFP · 2026</div></div>
+      <div class="stat reveal d2"><div class="num">$<span data-count="301">0</span><sup>K</sup></div><div class="lbl">Falcons ticket revenue driven by SMS in 2025, with 75% of season ticket members opted in</div><div class="src">Falcons digital support guide</div></div>
+      <div class="stat reveal d3"><div class="num">+<span data-count="30">0</span><sup>K</sup></div><div class="lbl">Falcons SMS opt-ins year over year, which is why we treat SMS as a revenue channel, not a blast channel</div><div class="src">Falcons digital support guide</div></div>
+    </div>
+
+    <div class="brands">
+      <div class="brand reveal" style="--accent:#cfd4dc"><small>We own marketing</small><b>Mercedes-Benz<br>Stadium</b></div>
+      <div class="brand reveal d1" style="--accent:#e2273b"><small>We support</small><b>Atlanta<br>Falcons</b></div>
+      <div class="brand reveal d2" style="--accent:#9b1426"><small>We support</small><b>Atlanta<br>United</b></div>
+      <div class="brand reveal d3" style="--accent:#d3ad62"><small>We're building with</small><b>Atlanta<br>City FC</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STRUCTURE ================= -->
+<section id="structure" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">02 · How we're built</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">Three teams.<br><span class="outline">One roof.</span></h2>
+    <p class="lede reveal d2" style="margin-top:24px">Lifecycle marketing decides what we say, to whom and when. Digital products decide where fans land and what they can do. Operations keeps every request moving. Everything rolls up to one leader so the fan gets one connected experience.</p>
+
+    <div class="org">
+      <div class="org-node top reveal"><b>Ryan Mucatel</b><small>SVP &amp; Chief Marketing Officer, AMBSE</small></div>
+      <div class="vline"></div>
+      <div class="org-node lead reveal d1"><b>Greg Urbano</b><small>Senior Director, Digital Experience</small></div>
+      <div class="pillars">
+        <div class="pillar reveal" style="--pc:var(--life)">
+          <div class="ptag">Engine A · Lifecycle</div>
+          <h3>Lifecycle &amp; Email</h3>
+          <p>Journeys, email, SMS/RCS and messaging strategy across every brand, built in Iterable.</p>
+          <div class="p-lead"><div class="chip">EB</div><div class="p-name"><b>Emily Barnhill</b><small>Director, Lifecycle Marketing</small></div></div>
+          <div class="p-mem"><div class="chip">BC</div><div class="p-name"><b>Bryan Cabalceta</b><small>Senior Email Developer</small></div></div>
+          <div class="p-mem"><div class="chip">AW</div><div class="p-name"><b>Amelie Willett</b><small>HTML Email Developer</small></div></div>
+          <div class="p-mem"><div class="chip">IB</div><div class="p-name"><b>Isabella Bane <span class="newtag">NEW</span></b><small>HTML Email Developer</small></div></div>
+        </div>
+        <div class="pillar reveal d1" style="--pc:var(--prod)">
+          <div class="ptag">Engine B · Products</div>
+          <h3>Digital Products &amp; Platforms</h3>
+          <p>Websites, apps, UX and event-day tools for the stadium, Falcons, United and Atlanta City FC.</p>
+          <div class="p-lead"><div class="chip">RH</div><div class="p-name"><b>Roshni Hariharan</b><small>Digital Products and Platforms Manager</small></div></div>
+          <div class="p-mem"><div class="chip">JG</div><div class="p-name"><b>Johnny Goulbourne</b><small>Digital Experience Developer</small></div></div>
+        </div>
+        <div class="pillar reveal d2" style="--pc:var(--ops)">
+          <div class="ptag">Drive shaft · Ops</div>
+          <h3>Marketing &amp; Digital Ops</h3>
+          <p>Intake, scoping, timelines, QA and MBS marketing execution, all tracked in Monday.com.</p>
+          <div class="p-lead"><div class="chip">KR</div><div class="p-name"><b>Kelsey Roberson</b><small>Sr. Coordinator, Marketing and Digital Operations</small></div></div>
+          <div class="p-mem"><div class="chip">RK</div><div class="p-name"><b>Rosa Kim</b><small>Digital Marketing Seasonal Associate</small></div></div>
+        </div>
+      </div>
+      <div class="seasonal reveal">
+        <div>Also on the field with us · <b>Sterling Reese</b>, Atlanta Falcons HBCU Fellow, Digital Operations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CREW ================= -->
+<section id="crew" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">03 · Meet the crew</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">The people<br>behind the <span class="red">petals.</span></h2>
+    <p class="lede reveal d2" style="margin-top:24px">Every role here owns part of the system. Each card shows what that person owns, what their work enables, and the impact it has on fans and on AMBSE. Filter by team to see how the pieces fit.</p>
+    <div class="filters reveal d3" id="filters">
+      <button class="on" data-f="all">All</button>
+      <button data-f="lead">Leadership</button>
+      <button data-f="life">Lifecycle &amp; Email</button>
+      <button data-f="prod">Products &amp; Platforms</button>
+      <button data-f="ops">Operations</button>
+    </div>
+    <div class="crew-grid" id="crewGrid"></div>
+  </div>
+</section>
+
+<!-- ================= LIFECYCLE ================= -->
+<section id="lifecycle" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">04 · The digital marketing lifecycle</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">One fan.<br><span class="outline">Eight moments.</span></h2>
+    <p class="lede reveal d2" style="margin-top:24px">This is the loop we run for every fan of every brand. Scroll through each stage to see which teammates light up and which channels do the work.</p>
+    <div class="life-grid">
+      <div class="life-sticky">
+        <div class="ring-wrap">
+          <svg id="ring" viewBox="-300 -300 600 600"></svg>
+          <div class="ring-center">
+            <div>
+              <div class="rc-n" id="rcN">01 / 08</div>
+              <div class="rc-t" id="rcT">Discover</div>
+              <div class="rc-who" id="rcWho"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="stages"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ENGINES ================= -->
+<section id="engines" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">05 · Two engines, one machine</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">Where email<br>meets <span class="gold">experience.</span></h2>
+    <p class="lede reveal d2" style="margin-top:24px">The email team and the digital products team aren't separate lanes. A KBYG email is only as good as the event page it links to, and a new website only grows if its forms feed Iterable. The overlap is where our best work happens.</p>
+
+    <div class="engines">
+      <div class="venn reveal">
+        <svg viewBox="0 0 500 400" id="venn">
+          <defs>
+            <radialGradient id="gA" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#e2273b" stop-opacity=".35"/><stop offset="1" stop-color="#e2273b" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gB" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d3ad62" stop-opacity=".35"/><stop offset="1" stop-color="#d3ad62" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle cx="180" cy="200" r="150" fill="url(#gA)"/>
+          <circle cx="320" cy="200" r="150" fill="url(#gB)"/>
+          <g class="spinA"><circle cx="180" cy="200" r="150" fill="none" stroke="#e2273b" stroke-width="2" stroke-dasharray="6 10"/></g>
+          <g class="spinB"><circle cx="320" cy="200" r="150" fill="none" stroke="#d3ad62" stroke-width="2" stroke-dasharray="6 10"/></g>
+          <text x="110" y="190" fill="#fff" font-size="20" font-weight="900" font-family="Archivo, Arial, sans-serif" text-anchor="middle">LIFECYCLE</text>
+          <text x="110" y="212" fill="#cfd4dc" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle">EMAIL · SMS · JOURNEYS</text>
+          <text x="390" y="190" fill="#fff" font-size="20" font-weight="900" font-family="Archivo, Arial, sans-serif" text-anchor="middle">PRODUCTS</text>
+          <text x="390" y="212" fill="#cfd4dc" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle">WEB · APP · UX</text>
+          <polygon points="250,120 278,150 278,250 250,280 222,250 222,150" fill="#0d0f13" stroke="#9fb3c8" stroke-width="1.5"/>
+          <text x="250" y="196" fill="#9fb3c8" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle">OPS</text>
+          <text x="250" y="212" fill="#fff" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle">FAN</text>
+        </svg>
+      </div>
+      <div class="eng-list">
+        <div class="eng reveal" style="--pc:var(--life)"><div class="t">Engine A</div><h4>What we say, to whom, and when</h4><p>Lifecycle journeys, segmentation, weekly sends, event comms and SMS. Built in Iterable with audiences from our data partners.</p><div class="who">Emily · Bryan · Amelie · Isabella</div></div>
+        <div class="eng reveal d1" style="--pc:var(--prod)"><div class="t">Engine B</div><h4>Where fans land and what they can do</h4><p>Websites in Webflow and Pocket, the apps, digital maps, UX, tagging and the forms that capture new fans.</p><div class="who">Roshni · Johnny</div></div>
+        <div class="eng reveal d2" style="--pc:var(--ops)"><div class="t">Drive shaft</div><h4>How work moves</h4><p>Intake, scoping, sequencing, asset readiness and QA so both engines run at full speed without collisions.</p><div class="who">Kelsey · Rosa · Sterling</div></div>
+        <div class="eng reveal d3" style="--pc:#ffffff"><div class="t">Steering</div><h4>Where we're headed</h4><p>Strategy, platforms, vendor partnerships, leadership alignment and making sure every brand sees the value.</p><div class="who">Greg</div></div>
+      </div>
+    </div>
+
+    <div class="kicker reveal" style="margin-top:120px">From request to fan inbox</div>
+    <div class="pipe reveal" id="pipe">
+      <div class="pipe-line"></div><div class="pipe-fill"></div>
+      <div class="pipe-steps">
+        <div class="pstep" style="--dl:.1s"><div class="dot">01</div><h5>Request</h5><p>A brand partner submits the ask with goals, audience and timing.</p><div class="tool">Email + Digital request forms</div></div>
+        <div class="pstep" style="--dl:.5s"><div class="dot">02</div><h5>Intake</h5><p>Ops scopes it, sequences it and assigns owners so nothing gets lost.</p><div class="tool">Monday.com</div></div>
+        <div class="pstep" style="--dl:.9s"><div class="dot">03</div><h5>Plan</h5><p>Lifecycle and products map the journey, channel mix and landing experience together.</p><div class="tool">Journey briefs</div></div>
+        <div class="pstep" style="--dl:1.3s"><div class="dot">04</div><h5>Build</h5><p>Emails and journeys in Iterable. Pages and app content in the CMS.</p><div class="tool">Iterable · Webflow · Pocket</div></div>
+        <div class="pstep" style="--dl:1.7s"><div class="dot">05</div><h5>Proof</h5><p>Final Review and Approval checks from name, subject, preheader, links, dates, images and list.</p><div class="tool">Ziflow</div></div>
+        <div class="pstep" style="--dl:2.1s"><div class="dot">06</div><h5>Launch + learn</h5><p>We ship, measure and feed what we learn into the next send.</p><div class="tool">Iterable · Power BI</div></div>
+      </div>
+    </div>
+
+    <div class="owns">
+      <div class="reveal"><h4>What we lead</h4><ul>
+        <li>Platforms, governance and builds across web, app, email and SMS</li>
+        <li>Journey design and channel recommendations</li>
+        <li>Full marketing responsibility for Mercedes-Benz Stadium</li>
+        <li>Standards for accuracy, accessibility and search visibility</li>
+        <li>Measurement and sharing what we learn</li>
+      </ul></div>
+      <div class="reveal d1"><h4>What brand teams own, with our support</h4><ul>
+        <li>Their brand strategy and campaign goals</li>
+        <li>Final calls on messaging, timing and tactics</li>
+        <li>Offers, creative direction and approvals</li>
+        <li>Bringing us in early while plans are still taking shape</li>
+        <li>Using the tools to their full potential, with our coaching</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INNOVATION ================= -->
+<section id="innovate" class="pad" style="padding-bottom:80px">
+  <div class="wrap">
+    <div class="kicker reveal">06 · Pushing the aperture</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">Innovation is<br><span class="outline">the default</span><span class="red">.</span></h2>
+    <p class="lede reveal d2" style="margin-top:24px">We don't wait for the future to show up. Here's what the team has shipped or is building right now.</p>
+    <div class="rail-hint reveal d3">Drag or scroll sideways →</div>
+  </div>
+  <div class="inno-rail" id="innoRail"></div>
+</section>
+
+<!-- ================= VALUES ================= -->
+<section id="values" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">07 · Arthur M. Blank core values</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">How we<br>show <span class="red">up.</span></h2>
+    <p class="lede reveal d2" style="margin-top:24px">Six core values run every business in the Blank Family of Businesses. Tap a card to see how our team lives each one, and where we're still pushing ourselves to get better.</p>
+    <div class="values" id="valuesGrid"></div>
+  </div>
+</section>
+
+<!-- ================= TOOLKIT ================= -->
+<section id="toolkit" class="pad">
+  <div class="wrap">
+    <div class="kicker reveal">08 · Your toolkit</div>
+    <h2 class="h-lg reveal d1" style="margin-top:22px">Gear up<br>for <span class="gold">game day.</span></h2>
+    <div class="tk">
+      <div class="tools reveal" id="tools"></div>
+      <div class="reveal d1">
+        <div class="rhythm">
+          <h4>Team rhythm</h4>
+          <div class="rh"><div class="day">MON</div><div><b>MBS Weekly Email Review</b><small>Upcoming stadium event sends</small></div></div>
+          <div class="rh"><div class="day">WED</div><div><b>UI/UX Weekly</b><small>Digital tasks across the properties</small></div></div>
+          <div class="rh"><div class="day">THU</div><div><b>AMBSE Digital Marketing Weekly</b><small>The whole team, all brands, one room</small></div></div>
+          <ul class="rules">
+            <li>Check every link, date, image and list. Every time.</li>
+            <li>Ask why before you build. The real problem is often one layer down.</li>
+            <li>Raise your hand. Our biggest ideas started with someone suggesting a better path.</li>
+            <li>The fan is the final approver.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINALE ================= -->
+<section id="finale">
+  <svg class="ap2" id="ap2" viewBox="-560 -560 1120 1120" aria-hidden="true"></svg>
+  <div class="fin">
+    <div class="kicker reveal" style="justify-content:center">Kickoff</div>
+    <h2 class="h-xl reveal d1" style="margin-top:22px">The roof opens<br>in under <span class="red">8 min.</span></h2>
+    <p class="reveal d2">What we build is felt by fans every single day.<br><b style="color:#fff" id="finaleName">Welcome to AMBSE Digital.</b> Let's go open some doors.</p>
+    <div class="sig reveal d3">AMBSE Digital Experience · Atlanta, GA</div>
+  </div>
+</section>
+
+</main>
+<footer><span>AMBSE Digital Experience · New hire field guide</span><span>Built for the team · October 2026</span></footer>
+
+<script>
+/* ======================================================
+   CONFIG · change the name to personalize the welcome
+   ====================================================== */
+const NEW_HIRE_NAME = "Isabella";
+
+const reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const $ = s => document.querySelector(s);
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs={}, parent) => { const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; };
+
+if(NEW_HIRE_NAME){
+  $('#welcomeName').innerHTML = 'Welcome,<br>' + NEW_HIRE_NAME;
+  $('#welcomeKicker').textContent = 'Your new home · AMBSE Digital';
+  $('#finaleName').textContent = 'Welcome to AMBSE Digital, ' + NEW_HIRE_NAME + '.';
+}
+
+/* ======================================================
+   DATA
+   ====================================================== */
+const crew = [
+ {f:'lead', ini:'GU', name:'Greg Urbano', title:'Senior Director, Digital Experience', team:'Leadership', pc:'#ffffff',
+  owns:['Enterprise digital strategy across all four brands','MarTech and digital product direction','Team leadership and the shared-services operating model','Vendor partnerships and platform decisions'],
+  enables:['Clear priorities that connect business goals to digital work','Common standards and scalable platform choices','Alignment across leaders, brands and partners'],
+  fan:'Creates the strategy and connected systems that let fans move across channels, brands and moments without friction.',
+  ent:'Makes sure digital investment drives revenue, efficiency, personalization and long-term fan value.'},
+ {f:'life', ini:'EB', name:'Emily Barnhill', title:'Director, Lifecycle Marketing', team:'Lifecycle & Email', pc:'#e2273b',
+  owns:['Lifecycle marketing strategy from first touch to renewal','Email, SMS/RCS and journey governance','Audience and communication planning','Leadership of the email development team'],
+  enables:['Audience-first marketing across every brand','Consistent decisions across channels','Lifecycle thinking built into campaign plans early'],
+  fan:'Fans get the right message at the right time based on where they are in their relationship with each brand.',
+  ent:'Turns fan data and channel strategy into engagement, conversion, retention and revenue.'},
+ {f:'life', ini:'BC', name:'Bryan Cabalceta', title:'Senior Email Developer', team:'Lifecycle & Email', pc:'#e2273b',
+  owns:['Lifecycle journey development','Marketing automation in Iterable','Email and SMS campaign architecture','Audience and segmentation execution'],
+  enables:['Personalized communication at scale','Always-on automated fan engagement','Timely sales, service and retention messaging'],
+  fan:'Fans hear from us based on their interests, behavior and history rather than one-size-fits-all blasts.',
+  ent:'Converts marketing strategy into scalable automated programs that drive revenue and save the team time.'},
+ {f:'life', ini:'AW', name:'Amelie Willett', title:'HTML Email Developer', team:'Lifecycle & Email', pc:'#e2273b',
+  owns:['Responsive HTML email development','Templates and reusable components','Campaign quality assurance','Accurate, on-time deployment'],
+  enables:['Consistent brand presentation in every inbox','Reliable rendering across devices and email clients','Faster builds through approved patterns'],
+  fan:'Fans get clear, accessible emails they can understand and act on quickly, on any device.',
+  ent:'Protects brand trust and quality while turning campaign plans into measurable communications.'},
+ {f:'life', ini:'IB', name:'Isabella Bane', title:'HTML Email Developer', team:'Lifecycle & Email', pc:'#e2273b', isNew:true,
+  owns:['Responsive HTML email development','Templates and reusable components','Campaign quality assurance','Accurate, on-time deployment'],
+  enables:['Consistent brand presentation in every inbox','Reliable rendering across devices and email clients','More capacity for lifecycle programs across brands'],
+  fan:'Fans get clear, accessible communications that connect them to events, offers, service updates and big moments.',
+  ent:'Expands what the team can deliver across AMBSE brands while keeping quality high.'},
+ {f:'prod', ini:'RH', name:'Roshni Hariharan', title:'Digital Products and Platforms Manager', team:'Products & Platforms', pc:'#d3ad62',
+  owns:['Digital product strategy and roadmaps','Web and mobile app platforms','User experience across fan touchpoints','Product connections to lifecycle marketing'],
+  enables:['Event discovery and fan self-service','Products and messaging that work together','Smart prioritization of fan-facing improvements'],
+  fan:'Digital experiences are easier to navigate and more useful before, during and after every event.',
+  ent:'Builds products that grow engagement, reduce friction and support conversion and service.'},
+ {f:'prod', ini:'JG', name:'Johnny Goulbourne', title:'Digital Experience Developer', team:'Products & Platforms', pc:'#d3ad62',
+  owns:['Website development and implementation','Front-end digital experiences','CMS architecture and reusable components','Analytics, tagging and search visibility'],
+  enables:['Faster launches and updates','Consistent experiences across sites','Forms and pages that feed our messaging platforms'],
+  fan:'Fans get fast, reliable sites where they can find trusted information and take action.',
+  ent:'Turns strategy, content and design into working products that scale across brands.'},
+ {f:'ops', ini:'KR', name:'Kelsey Roberson', title:'Sr. Coordinator, Marketing and Digital Operations', team:'Operations', pc:'#9fb3c8',
+  owns:['Request intake and project planning','Workflow and prioritization in Monday.com','Operational coordination across teams','Mercedes-Benz Stadium marketing execution'],
+  enables:['Clear owners, timelines and dependencies','Predictable delivery across brands','Visibility into workload and priorities'],
+  fan:'Fan-facing work launches on time, with the right inputs and fewer avoidable errors.',
+  ent:'Creates the operational discipline that lets a shared-services team scale.'},
+ {f:'ops', ini:'RK', name:'Rosa Kim', title:'Digital Marketing Seasonal Associate', team:'Operations', pc:'#9fb3c8',
+  owns:['Campaign and content execution support','Quality checks across channels','Project tracking and coordination','Event and marketing readiness'],
+  enables:['Extra capacity during peak event seasons','Consistent checks on fan-facing work','Better coordination of assets and timelines'],
+  fan:'Supports accurate, timely information across web, app, email, SMS and event day.',
+  ent:'Helps the team handle high volume without sacrificing quality.'},
+ {f:'ops', ini:'SR', name:'Sterling Reese', title:'Atlanta Falcons HBCU Fellow, Digital Operations', team:'Operations', pc:'#9fb3c8',
+  owns:['Digital operations support','Campaign and event readiness','Cross-channel execution help','Learning the full digital lifecycle'],
+  enables:['Added support on active priorities','Fresh perspective inside digital operations','Steady follow-through on campaign tasks'],
+  fan:'Helps make sure the information and campaigns reaching Falcons fans are accurate and ready.',
+  ent:'Adds execution capacity while building the next generation of digital talent.'}
+];
+
+const stages = [
+ {t:'Discover', q:'Can fans find us, and trust what they find?', who:[['Johnny','p'],['Roshni','p'],['Greg','d']],
+  ch:['Websites','Search','AI answers','App stores','Video'],
+  p:'Fans start on Google, ChatGPT, YouTube and TikTok. We make sure our official sites are the source those platforms trust, with accurate pages, structured data and content shaped around real fan questions.',
+  proof:'Our goal is simple. Be the source fans and AI trust.'},
+ {t:'Capture', q:'How does a visitor become a known fan?', who:[['Johnny','p'],['Bryan','l'],['Emily','l']],
+  ch:['Sign-up forms','Digioh','SMS consent','Iterable'],
+  p:'Every sign-up form, event activation and deposit flow sends fan data straight into Iterable. SMS consent gets captured from day one because it can never be retrofitted later.',
+  proof:'atlcty.com launched with forms wired directly into Iterable so campaigns can be targeted and measured from the first click.'},
+ {t:'Welcome', q:'What happens in the first 72 hours?', who:[['Emily','l'],['Bryan','l']],
+  ch:['Email','SMS','Journeys'],
+  p:'New fans get welcome journeys tailored to where they came from, whether that\'s a grassroots event, a deposit or a Stay Connected form. Timely follow-up turns curiosity into commitment.',
+  proof:'NWSL welcome journeys follow up by email at 48 hours and SMS at 72 hours to keep conversion momentum.'},
+ {t:'Engage', q:'Why would a fan keep opening?', who:[['Amelie','l'],['Isabella','l'],['Bryan','l'],['Roshni','p']],
+  ch:['Weekly email','App content','Push','Web'],
+  p:'Weekly newsletters, account updates, tune-in reminders and fresh app content keep fans connected between big moments. Every send goes through the same review standard.',
+  proof:'Final Review and Approval checks the from name, subject line, preheader, every link, date, image and contact list before anything is scheduled.'},
+ {t:'Convert', q:'When is a fan ready to buy?', who:[['Emily','l'],['Bryan','l'],['Greg','d']],
+  ch:['Triggered journeys','SMS','Retargeting','Personalization'],
+  p:'High-propensity, handraiser, abandoned browse and single-game buyer journeys meet fans when intent is highest. Paid builds demand and owned channels convert and qualify.',
+  proof:'Falcons SMS drove $301K in ticket revenue in 2025. That\'s why SMS is treated as a primary conversion lever.'},
+ {t:'Event Day', q:'Does the fan know exactly what to do?', who:[['Amelie','l'],['Roshni','p'],['Johnny','p'],['Kelsey','o']],
+  ch:['KBYG email','App','Digital map','Chatbot','Event pages'],
+  p:'Parking, gates, policies, food, accessibility and wayfinding. The most important information we publish all year lands on event day, and it has to be right.',
+  proof:'Our new digital stadium map tested live at Sunday Night Football before its planned fan launch for the 49ers game on Oct 25.'},
+ {t:'Retain', q:'Will they come back and renew?', who:[['Emily','l'],['Bryan','l']],
+  ch:['Renewal journeys','Service recovery','Member comms'],
+  p:'Season ticket members, Founding Members and lapsed fans each get their own path. Service recovery journeys protect renewals, and re-engagement tracks make sure the funnel never dead-ends.',
+  proof:'Founding Members for Atlanta City FC are treated as a distinct audience with exclusive creative and priority communication.'},
+ {t:'Measure', q:'What did we learn, and what changes next?', who:[['Kelsey','o'],['Emily','l'],['Greg','d']],
+  ch:['KPIs','Dashboards','A/B tests','AI insights'],
+  p:'Delivery, opens, clicks, conversions and revenue attribution feed the next plan. We test, learn and share results so every brand gets smarter.',
+  proof:'We report regularly on platform performance, journey insights and new tactics as we move to a more personalized, journey-centric model.'}
+];
+
+const inno = [
+ {tag:'Martech foundation', h:'One fan, one profile', p:'Iterable for activation, Hightouch as our CDP and Microsoft Dynamics as CRM. Together they let us build audiences faster, target smarter and measure with precision.', lead:'Emily · Bryan · Greg', ic:'stack'},
+ {tag:'AI in the build', h:'AI as a teammate', p:'On atlcty.com, AI read the site, proposed changes and completed tasks in bulk while our team approved every change. Accessibility text, page metadata and search updates shipped in single passes.', lead:'Johnny', ic:'spark'},
+ {tag:'Event day', h:'The digital stadium map', p:'A new interactive map built with Mappedin to help fans navigate Mercedes-Benz Stadium, tested live by our own teams before it reaches fans.', lead:'Roshni', ic:'map'},
+ {tag:'Mobile', h:'Four apps. One platform.', p:'We wrote and are running the RFP to rebuild the Falcons, United and MBS apps and launch a brand new app for our NWSL club under one agreement.', lead:'Greg · Roshni', ic:'apps'},
+ {tag:'Search + AI', h:'Digital authority', p:'Search is shifting to AI-generated answers. We\'re making sure official AMBSE information is accurate, structured and easy for search bots and AI tools to understand.', lead:'Greg · Johnny · Roshni', ic:'radar'},
+ {tag:'Messaging', h:'SMS and RCS that earn their place', p:'SMS is rare, useful and worth the interruption. Presales, deadlines and matchday logistics. RCS adds richer, branded experiences on the same journeys.', lead:'Emily · Bryan', ic:'bolt'},
+ {tag:'Fan support', h:'A chatbot built on truth', p:'Our chatbot has pushed us to gather and structure information from across the organization for more than two years, which puts us ahead as AI search grows.', lead:'Roshni · Greg', ic:'chat'}
+];
+
+const values = [
+ {h:'Put People First', d:'People are the heartbeat of a successful enterprise. Build trust, listen and invest in growth.',
+  live:'Teammates get a real seat at the table in vendor evaluations, demos, training and cross-functional meetings. That exposure builds networks, confidence and an understanding of how our work connects to the business.',
+  sharp:'Making sure great work earns more space, development and recognition, not just more work.'},
+ {h:'Include Everyone', d:'Our differences make us more valuable. Harness them for a competitive edge.',
+  live:'We design for fans who reach us in different ways, across web, email, SMS, push, apps, chatbots, maps and video. We pull in the people closest to the work, from operations to service to data, before we decide.',
+  sharp:'Bringing subject matter experts in earlier so inclusion means real participation, not just review.'},
+ {h:'Lead by Example', d:'Show an entrepreneurial spirit. Make decisions, take responsibility and speak up.',
+  live:'Many of our biggest initiatives started because someone raised a hand and suggested a better path. From the Iterable migration to app platforms to AI, this team steps into unfamiliar territory and owns outcomes, not just tasks.',
+  sharp:'Slowing down just enough to debate alternatives before we jump into execution.'},
+ {h:'Listen and Respond', d:'Understand what customers need and treat every need as a golden opportunity.',
+  live:'We work to understand objectives, constraints, timing and event-day realities before choosing the digital response. A request is a chance to find the underlying problem, not just deliver the first thing asked for.',
+  sharp:'Hearing from more voices, not just the most confident ones in the room.'},
+ {h:'Innovate Continuously', d:'Non-stop reinvention. Don\'t let bureaucracy kill innovation.',
+  live:'We challenge legacy processes, explore emerging technology and move the organization from general interest in AI to practical uses in copy, journeys, personalization and operations.',
+  sharp:'Defining the problem, success metrics and long-term ownership before an experiment becomes a product.'},
+ {h:'Give Back to Others', d:'The well-being of business can\'t be separated from the well-being of society.',
+  live:'Our team mentors, joins Associate Resource Groups and coaches colleagues on digital, analytics and AI. Our work with Atlanta City FC helps grow the visibility of women\'s sports and build a future community asset for Atlanta.',
+  sharp:'Creating more ways to give back together as a team, and training future leaders across AMBSE.'}
+];
+
+const tools = [
+ ['Iterable','Our omnichannel platform for email, SMS and journeys'],
+ ['Webflow','CMS for MercedesBenzStadium.com and atlcty.com'],
+ ['Pocket','The NFL CMS behind AtlantaFalcons.com'],
+ ['Monday.com','Where digital projects and requests live'],
+ ['Ziflow','Proofing, feedback and approvals on creative'],
+ ['Power BI','Business intelligence and dashboards'],
+ ['Figma','Designs and reusable component libraries'],
+ ['Request forms','Email and Digital request forms start every job']
+];
+
+/* ======================================================
+   HERO APERTURE
+   ====================================================== */
+function buildAperture(svg, opts={}){
+  const R = 420, N = 8, big = R*1.9;
+  const defs = el('defs',{},svg);
+  const cp = el('clipPath',{id:svg.id+'Clip'},defs); el('circle',{r:R},cp);
+  const g1 = el('linearGradient',{id:svg.id+'Pet',x1:'0',y1:'0',x2:'1',y2:'1'},defs);
+  el('stop',{offset:'0','stop-color':'#2b3038'},g1); el('stop',{offset:'.55','stop-color':'#161a20'},g1); el('stop',{offset:'1','stop-color':'#0b0d10'},g1);
+  const g2 = el('linearGradient',{id:svg.id+'Edge',x1:'0',y1:'0',x2:'1',y2:'0'},defs);
+  el('stop',{offset:'0','stop-color':'#e2273b'},g2); el('stop',{offset:'1','stop-color':'#d3ad62'},g2);
+  const glow = el('filter',{id:svg.id+'Glow',x:'-50%',y:'-50%',width:'200%',height:'200%'},defs);
+  el('feGaussianBlur',{stdDeviation:'6',result:'b'},glow);
+  const fm = el('feMerge',{},glow); el('feMergeNode',{in:'b'},fm); el('feMergeNode',{in:'SourceGraphic'},fm);
+
+  // outer halo ring + ticks
+  const halo = el('g',{},svg);
+  el('circle',{r:R+14,fill:'none',stroke:'rgba(255,255,255,.22)','stroke-width':2},halo);
+  el('circle',{r:R+46,fill:'none',stroke:'rgba(255,255,255,.08)','stroke-width':1},halo);
+  const ticks = el('g',{class:'ticks'},halo);
+  for(let i=0;i<120;i++){
+    const a=i/120*Math.PI*2, r1=R+22, r2=R+(i%15===0?40:30);
+    el('line',{x1:Math.cos(a)*r1,y1:Math.sin(a)*r1,x2:Math.cos(a)*r2,y2:Math.sin(a)*r2,stroke:i%15===0?'#e2273b':'rgba(255,255,255,.25)','stroke-width':i%15===0?2.5:1},ticks);
+  }
+  // labels around ring
+  const labels = el('g',{class:'labels'},svg);
+  const names = opts.names || [];
+  names.forEach((n,i)=>{
+    const a=(i/N)*Math.PI*2 - Math.PI/2 + Math.PI/N, r=R+80;
+    const t = el('text',{x:Math.cos(a)*r,y:Math.sin(a)*r+5,'text-anchor':'middle',fill:'#cfd4dc','font-size':'19','font-family':'JetBrains Mono, Consolas, monospace','letter-spacing':'3',opacity:0},labels);
+    t.textContent = n.toUpperCase();
+  });
+
+  const petalsG = el('g',{'clip-path':`url(#${svg.id}Clip)`},svg);
+  const spin = el('g',{},petalsG);
+  const petals=[];
+  for(let i=0;i<N;i++){
+    const th = (i/N)*Math.PI*2 - Math.PI/2, th2 = th + Math.PI*2/N;
+    const A=[Math.cos(th)*big,Math.sin(th)*big], B=[Math.cos(th2)*big,Math.sin(th2)*big];
+    const g = el('g',{},spin);
+    el('path',{d:`M0 0 L${A[0]} ${A[1]} L${B[0]} ${B[1]} Z`,fill:`url(#${svg.id}Pet)`,stroke:'rgba(255,255,255,.16)','stroke-width':1.2},g);
+    // ETFE panel lines
+    for(let k=1;k<=5;k++){
+      const f=k/6, P=[A[0]*f,A[1]*f], Q=[B[0]*f,B[1]*f];
+      el('line',{x1:P[0],y1:P[1],x2:Q[0],y2:Q[1],stroke:'rgba(255,255,255,.06)','stroke-width':1},g);
+    }
+    const mid=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+    el('line',{x1:0,y1:0,x2:mid[0],y2:mid[1],stroke:'rgba(255,255,255,.05)','stroke-width':1},g);
+    // leading edge accent
+    const edge = el('line',{x1:0,y1:0,x2:A[0]*.6,y2:A[1]*.6,stroke:`url(#${svg.id}Edge)`,'stroke-width':4,filter:`url(#${svg.id}Glow)`,opacity:0},g);
+    petals.push({g,th,edge});
+  }
+  // inner rim
+  el('circle',{r:R,fill:'none',stroke:'rgba(255,255,255,.35)','stroke-width':3},svg);
+  let engrave=null;
+  if(opts.engrave){
+    engrave=el('g',{},svg);
+    el('circle',{r:64,fill:'#0b0d10',stroke:'#e2273b','stroke-width':2},engrave);
+    el('polygon',{points:'0,-30 26,15 -26,15',fill:'none',stroke:'#d3ad62','stroke-width':2,transform:'rotate(180) translate(0,-4)'},engrave);
+    const t1=el('text',{y:118,'text-anchor':'middle',fill:'#ffffff','font-size':'26','font-weight':'900','font-family':'Archivo, sans-serif','letter-spacing':'6'},engrave); t1.textContent=opts.engrave[0];
+    const t2=el('text',{y:150,'text-anchor':'middle',fill:'#8b929e','font-size':'14','font-family':'JetBrains Mono, monospace','letter-spacing':'5'},engrave); t2.textContent=opts.engrave[1];
+  }
+
+  function set(p){
+    const e = p*p*(3-2*p); // smoothstep
+    const d = e*R*(opts.travel||0.8);
+    petals.forEach(pt=>{
+      pt.g.setAttribute('transform',`translate(${Math.cos(pt.th)*d} ${Math.sin(pt.th)*d})`);
+      pt.edge.setAttribute('opacity',Math.min(1,e*1.6).toFixed(2));
+    });
+    spin.setAttribute('transform',`rotate(${e*22.5})`);
+    ticks.setAttribute('transform',`rotate(${-e*45})`);
+    if(engrave) engrave.setAttribute('opacity',Math.max(0,1-e*6).toFixed(2));
+    [...labels.children].forEach((t,i)=>t.setAttribute('opacity',Math.max(0,Math.min(1,(e-.35-i*.04)*3)).toFixed(2)));
+  }
+  return set;
+}
+const heroNames = ['Greg','Emily','Bryan','Amelie','Isabella','Roshni','Johnny','Kelsey'];
+const setHero = buildAperture($('#aperture'),{names:heroNames,engrave:['AMBSE DIGITAL','SCROLL TO OPEN']});
+const setFinale = buildAperture($('#ap2'),{names:[],travel:.9});
+setHero(0); setFinale(0);
+
+/* ======================================================
+   HALO TICKER
+   ====================================================== */
+(function(){
+  const words=['Mercedes-Benz Stadium','Atlanta Falcons','Atlanta United','Atlanta City FC','Email','SMS / RCS','Apps','Web','Journeys','Fans first'];
+  const html = words.map(w=>`<span>${w}<em>✦</em></span>`).join('');
+  $('#haloTrack').innerHTML = html+html;
+})();
+
+/* ======================================================
+   CREW CARDS
+   ====================================================== */
+(function(){
+  const grid=$('#crewGrid');
+  crew.forEach((c,i)=>{
+    const d=document.createElement('article');
+    d.className='card reveal'+(c.isNew?' newbie':'');
+    d.dataset.f=c.f; d.style.setProperty('--pc',c.pc);
+    d.innerHTML=`<div class="idx">${c.isNew?'NEW · ':''}${String(i+1).padStart(2,'0')}</div>
+      <div class="mono">${c.ini}</div>
+      <div class="team">${c.team}</div>
+      <h3>${c.name}</h3>
+      <div class="title">${c.title}</div>
+      <div class="role-block"><b>Owns</b><ul>${c.owns.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+      <div class="role-block"><b>Enables</b><ul>${c.enables.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+      <div class="impact"><b>Fan impact</b>${c.fan}</div>
+      <div class="impact"><b>Enterprise impact</b>${c.ent}</div>`;
+    grid.appendChild(d);
+    if(!reduce){
+      d.addEventListener('mousemove',ev=>{
+        const r=d.getBoundingClientRect(), x=(ev.clientX-r.left)/r.width, y=(ev.clientY-r.top)/r.height;
+        d.style.transform=`perspective(900px) rotateY(${(x-.5)*8}deg) rotateX(${(.5-y)*8}deg) translateY(-4px)`;
+        d.style.setProperty('--mx',x*100+'%'); d.style.setProperty('--my',y*100+'%');
+      });
+      d.addEventListener('mouseleave',()=>{d.style.transform='';});
+    }
+  });
+  $('#filters').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on',x===b));
+    const f=b.dataset.f;
+    document.querySelectorAll('.card').forEach(c=>c.classList.toggle('dim',f!=='all'&&c.dataset.f!==f));
+  });
+})();
+
+/* ======================================================
+   LIFECYCLE RING
+   ====================================================== */
+const ring=$('#ring'); const arcs=[];
+(function(){
+  const N=stages.length, R=250, r=205, gap=0.035;
+  el('circle',{r:R+18,fill:'none',stroke:'rgba(255,255,255,.08)','stroke-width':1},ring);
+  el('circle',{r:r-18,fill:'none',stroke:'rgba(255,255,255,.08)','stroke-width':1},ring);
+  const orbit = el('g',{class:'orbit'},ring);
+  for(let i=0;i<60;i++){const a=i/60*Math.PI*2; el('circle',{cx:Math.cos(a)*(r-30),cy:Math.sin(a)*(r-30),r:1.2,fill:'rgba(255,255,255,.25)'},orbit);}
+  stages.forEach((s,i)=>{
+    const a0=(i/N)*Math.PI*2-Math.PI/2+gap, a1=((i+1)/N)*Math.PI*2-Math.PI/2-gap;
+    const p=(a,rad)=>[Math.cos(a)*rad,Math.sin(a)*rad];
+    const [x0,y0]=p(a0,R),[x1,y1]=p(a1,R),[x2,y2]=p(a1,r),[x3,y3]=p(a0,r);
+    const path=el('path',{d:`M${x0} ${y0} A${R} ${R} 0 0 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 0 0 ${x3} ${y3} Z`,fill:'rgba(255,255,255,.04)',stroke:'rgba(255,255,255,.15)','stroke-width':1,style:'transition:fill .5s, stroke .5s;cursor:pointer'},ring);
+    const am=(a0+a1)/2, [lx,ly]=p(am,R+40);
+    const t=el('text',{x:lx,y:ly+4,'text-anchor':'middle',fill:'#8b929e','font-size':'12','font-family':'JetBrains Mono, Consolas, monospace','letter-spacing':'2',style:'transition:fill .5s'},ring);
+    t.textContent=String(i+1).padStart(2,'0')+' '+s.t.toUpperCase();
+    path.addEventListener('click',()=>document.getElementById('stage'+i).scrollIntoView({behavior:'smooth',block:'center'}));
+    arcs.push({path,t});
+  });
+  // comet
+  const comet=el('circle',{r:7,fill:'#e2273b',filter:'drop-shadow(0 0 8px #e2273b)'},ring);
+  ring._comet=comet;
+  const st=$('#stages');
+  stages.forEach((s,i)=>{
+    const d=document.createElement('div'); d.className='stage'; d.id='stage'+i; d.dataset.i=i;
+    d.innerHTML=`<div class="snum">${String(i+1).padStart(2,'0')}</div><h3>${s.t}</h3><div class="q">${s.q}</div><p>${s.p}</p>
+      <div class="chans">${s.ch.map(c=>`<span>${c}</span>`).join('')}</div>
+      <div class="proof"><b>On the field</b>${s.proof}</div>`;
+    st.appendChild(d);
+  });
+})();
+let activeStage=-1, cometAngle=-Math.PI/2+Math.PI/8, cometTarget=cometAngle;
+function setStage(i){
+  if(i===activeStage) return; activeStage=i;
+  arcs.forEach((a,k)=>{
+    const on=k===i, past=k<i;
+    a.path.setAttribute('fill', on?'rgba(226,39,59,.85)':past?'rgba(226,39,59,.18)':'rgba(255,255,255,.04)');
+    a.path.setAttribute('stroke', on?'#ff5a6a':'rgba(255,255,255,.15)');
+    a.t.setAttribute('fill', on?'#ffffff':past?'#cfd4dc':'#8b929e');
+  });
+  document.querySelectorAll('.stage').forEach((s,k)=>s.classList.toggle('active',k===i));
+  const s=stages[i];
+  $('#rcN').textContent=String(i+1).padStart(2,'0')+' / 08';
+  $('#rcT').textContent=s.t;
+  $('#rcWho').innerHTML=s.who.map(w=>`<span class="${w[1]}">${w[0]}</span>`).join('');
+  cometTarget=(i/8)*Math.PI*2-Math.PI/2+Math.PI/8;
+  while(cometTarget<cometAngle-Math.PI) cometTarget+=Math.PI*2;
+  while(cometTarget>cometAngle+Math.PI) cometTarget-=Math.PI*2;
+}
+setStage(0);
+
+/* ======================================================
+   INNOVATION RAIL
+   ====================================================== */
+const icons={
+ stack:'<svg viewBox="0 0 74 74" class="ic"><polygon points="37,6 68,20 37,34 6,20" fill="none" stroke="#e2273b" stroke-width="2.5"/><polyline points="6,34 37,48 68,34" fill="none" stroke="#d3ad62" stroke-width="2.5"/><polyline points="6,48 37,62 68,48" fill="none" stroke="#cfd4dc" stroke-width="2.5"/></svg>',
+ spark:'<svg viewBox="0 0 74 74" class="ic"><path d="M37 4 L44 30 L70 37 L44 44 L37 70 L30 44 L4 37 L30 30 Z" fill="none" stroke="#e2273b" stroke-width="2.5"/><circle cx="37" cy="37" r="6" fill="#d3ad62"/></svg>',
+ map:'<svg viewBox="0 0 74 74" class="ic"><polygon points="6,16 26,8 48,16 68,8 68,58 48,66 26,58 6,66" fill="none" stroke="#cfd4dc" stroke-width="2.5"/><path d="M37 22c-6 0-10 4-10 10 0 8 10 18 10 18s10-10 10-18c0-6-4-10-10-10z" fill="#e2273b"/></svg>',
+ apps:'<svg viewBox="0 0 74 74" class="ic"><rect x="8" y="8" width="24" height="24" fill="none" stroke="#e2273b" stroke-width="2.5"/><rect x="42" y="8" width="24" height="24" fill="none" stroke="#e2273b" stroke-width="2.5"/><rect x="8" y="42" width="24" height="24" fill="none" stroke="#e2273b" stroke-width="2.5"/><rect x="42" y="42" width="24" height="24" fill="#d3ad62"/></svg>',
+ radar:'<svg viewBox="0 0 74 74" class="ic"><circle cx="37" cy="37" r="30" fill="none" stroke="#cfd4dc" stroke-width="2"/><circle cx="37" cy="37" r="18" fill="none" stroke="#cfd4dc" stroke-width="2"/><path d="M37 37 L62 20" stroke="#e2273b" stroke-width="3"/><circle cx="52" cy="27" r="4" fill="#d3ad62"/></svg>',
+ bolt:'<svg viewBox="0 0 74 74" class="ic"><polygon points="42,4 14,42 34,42 28,70 60,28 40,28" fill="none" stroke="#e2273b" stroke-width="2.5"/></svg>',
+ chat:'<svg viewBox="0 0 74 74" class="ic"><path d="M8 12 H66 V50 H32 L18 64 V50 H8 Z" fill="none" stroke="#cfd4dc" stroke-width="2.5"/><circle cx="26" cy="31" r="3.5" fill="#e2273b"/><circle cx="37" cy="31" r="3.5" fill="#e2273b"/><circle cx="48" cy="31" r="3.5" fill="#d3ad62"/></svg>'
+};
+(function(){
+  const rail=$('#innoRail');
+  inno.forEach((x,i)=>{
+    const d=document.createElement('div'); d.className='inno reveal';
+    d.innerHTML=`${icons[x.ic]}<div class="tag">${x.tag}</div><h4>${x.h}</h4><p>${x.p}</p><div class="lead">Led by ${x.lead}</div><div class="bignum">${String(i+1).padStart(2,'0')}</div>`;
+    rail.appendChild(d);
+  });
+  // drag to scroll
+  let down=false,sx=0,sl=0;
+  rail.addEventListener('mousedown',e=>{down=true;sx=e.pageX;sl=rail.scrollLeft;rail.style.cursor='grabbing'});
+  window.addEventListener('mouseup',()=>{down=false;rail.style.cursor=''});
+  rail.addEventListener('mousemove',e=>{if(!down)return;e.preventDefault();rail.scrollLeft=sl-(e.pageX-sx)});
+})();
+
+/* ======================================================
+   VALUES
+   ====================================================== */
+(function(){
+  const g=$('#valuesGrid');
+  values.forEach((v,i)=>{
+    const d=document.createElement('div'); d.className='val reveal'; d.tabIndex=0; d.setAttribute('role','button'); d.setAttribute('aria-label',v.h+'. Flip to see how we live it.');
+    d.innerHTML=`<div class="val-in"><div class="val-f"><div class="vn">0${i+1}</div><div><h4>${v.h}</h4><p>${v.d}</p><div class="flip-hint">Tap to flip ↻</div></div></div>
+      <div class="val-b"><b>How we live it</b><p>${v.live}</p><div class="sharp"><b>Where we're sharpening</b>${v.sharp}</div></div></div>`;
+    const flip=()=>d.classList.toggle('flip');
+    d.addEventListener('click',flip); d.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip();}});
+    g.appendChild(d);
+  });
+  const t=$('#tools');
+  tools.forEach(x=>{const d=document.createElement('div');d.className='tool';d.innerHTML=`<b>${x[0]}</b><p>${x[1]}</p>`;t.appendChild(d)});
+})();
+
+/* ======================================================
+   OBSERVERS (with fallback when IntersectionObserver is unavailable)
+   ====================================================== */
+const hasIO = 'IntersectionObserver' in window;
+function countUp(n){
+  if(n._done) return; n._done=true;
+  const target=+n.dataset.count, t0=Date.now(), dur=reduce?0:1600;
+  const tick=()=>{const p=dur?Math.min(1,(Date.now()-t0)/dur):1; n.textContent=Math.round(target*(1-Math.pow(1-p,4))); if(p<1) raf(tick);};
+  tick();
+}
+const revealEls=[].slice.call(document.querySelectorAll('.reveal,.stat,.pipe'));
+function showEl(el){ if(el.classList.contains('in')) return; el.classList.add('in'); [].forEach.call(el.querySelectorAll('[data-count]'),countUp); }
+const stageEls=[].slice.call(document.querySelectorAll('.stage'));
+const sectionEls=[].slice.call(document.querySelectorAll('main > section'));
+const navLinks=[].slice.call(document.querySelectorAll('#navlinks a'));
+function setNav(id){ navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+id)); }
+
+/* Position-based checks run on every scroll and frame. They do not depend on
+   window.scrollY, so they also work when the page is hosted inside a viewer
+   (SharePoint, Teams, OneDrive) that scrolls a wrapper element instead of the window. */
+function positionChecks(vh){
+  for(let i=0;i<revealEls.length;i++){
+    const el=revealEls[i]; if(el.classList.contains('in')) continue;
+    const r=el.getBoundingClientRect(); if(r.top<vh*0.92 && r.bottom>0) showEl(el);
+  }
+  let best=-1, bestD=1e9;
+  for(let i=0;i<stageEls.length;i++){
+    const r=stageEls[i].getBoundingClientRect(); const d=Math.abs((r.top+r.bottom)/2-vh/2);
+    if(r.bottom>0 && r.top<vh && d<bestD){bestD=d;best=i;}
+  }
+  if(best>-1) setStage(best);
+  for(let i=0;i<sectionEls.length;i++){
+    const r=sectionEls[i].getBoundingClientRect(); if(r.top<=vh/2 && r.bottom>vh/2){ setNav(sectionEls[i].id); break; }
+  }
+}
+
+/* ======================================================
+   SCROLL ENGINE
+   ====================================================== */
+const hero=$('#open'), cap=$('#heroCaption'), cue=$('#scrollCue'), pct=$('#hudPct'), apWrap=$('#apWrap'), fin=$('#finale'), prog=$('#progress'), mainEl=document.querySelector('main');
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function viewH(){ return window.innerHeight || document.documentElement.clientHeight || 800; }
+let lastOpen=-1;
+function update(t){
+  const vh=viewH();
+  // overall page progress, measured from element positions
+  const mr=mainEl.getBoundingClientRect();
+  const total=Math.max(1, mr.height - vh);
+  prog.style.width=(clamp(-mr.top/total,0,1)*100)+'%';
+  // hero aperture: how far the hero section has scrolled past the top of the viewport
+  const hr=hero.getBoundingClientRect();
+  const hp=clamp(-hr.top/Math.max(1, hr.height - vh),0,1);
+  let open=clamp((hp-.04)/.56,0,1);
+  if(hp<.02 && !reduce){ open=Math.max(open,(Math.sin((t||Date.now())/900)+1)/2*.05); }
+  if(Math.abs(open-lastOpen)>0.0005){ setHero(open); lastOpen=open; }
+  pct.textContent=Math.round(clamp((hp-.04)/.56,0,1)*100)+'%';
+  const cp=clamp((hp-.58)/.2,0,1);
+  cap.style.opacity=cp; cap.style.transform='translateY('+((1-cp)*30)+'px)';
+  cue.style.opacity=1-Math.min(1,hp*8);
+  apWrap.style.transform='scale('+(1-cp*.18)+') translateY('+(-cp*6)+'vh)';
+  // finale aperture
+  const fr=fin.getBoundingClientRect();
+  if(fr.top<vh && fr.bottom>0) setFinale(clamp((vh-fr.top)/(vh+fr.height*.4),0,1));
+  positionChecks(vh);
+}
+const raf = window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : (fn=>setTimeout(()=>fn(Date.now()),16));
+const spinA=[].slice.call(document.querySelectorAll('.spinA')), spinB=[].slice.call(document.querySelectorAll('.spinB'));
+function frame(t){
+  try{
+    update(t);
+    cometAngle+=(cometTarget-cometAngle)*.08;
+    if(ring._comet){ring._comet.setAttribute('cx',Math.cos(cometAngle)*268);ring._comet.setAttribute('cy',Math.sin(cometAngle)*268);}
+    const deg=((t||Date.now())/80)%360;
+    spinA.forEach(g=>g.setAttribute('transform','rotate('+deg+' 180 200)'));
+    spinB.forEach(g=>g.setAttribute('transform','rotate('+(-deg)+' 320 200)'));
+  }catch(err){ if(window.console) console.warn('frame',err); }
+  raf(frame);
+}
+raf(frame);
+// also respond instantly to scrolling on ANY element (capture phase), plus resize and touch
+const onScroll=()=>{ try{ update(Date.now()); }catch(e){} };
+document.addEventListener('scroll',onScroll,{capture:true,passive:true});
+window.addEventListener('scroll',onScroll,{passive:true});
+window.addEventListener('resize',onScroll);
+window.addEventListener('touchmove',onScroll,{passive:true});
+// optional IntersectionObserver for extra responsiveness when available
+if(hasIO){
+  try{
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ showEl(e.target); io.unobserve(e.target);} }),{threshold:.12});
+    revealEls.forEach(n=>io.observe(n));
+  }catch(e){}
+}
+// safety net: if nothing has revealed after 2.5s (unusual host), show everything
+setTimeout(()=>{ if(!document.querySelector('#mission .in')){ const vh=viewH(); const r=$('#mission').getBoundingClientRect(); if(r.top<vh) revealEls.forEach(showEl);} },2500);
+
+/* cursor glow */
+const glow=$('#glow');
+try{
+  if(!reduce && window.matchMedia && matchMedia('(pointer:fine)').matches){
+    addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';});
+  }else{glow.style.display='none'}
+}catch(e){ glow.style.display='none'; }
+</script>
+</body>
+</html>
